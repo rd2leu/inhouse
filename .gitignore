@@ -96,3 +96,6 @@ ENV/
 *.idea/
 
 _backups/
+
+#vscode
+.vscode
