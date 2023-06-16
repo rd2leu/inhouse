@@ -1,0 +1,38 @@
+{% extends 'balancer/balancer-input.html' %}
+{% load static %}
+
+{% block balancer-content %}
+<form action="{% url 'balancer:balancer-input-custom' %}" method="post">
+    {% csrf_token %}
+
+    <div class="table-responsive">
+        <table class="table table-borderless  ">
+            <thead>
+                <tr>
+                    <th class="col-xs-7">Player</th>
+                    <th class="col-xs-5">MMR</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for field in form %}
+                    {% cycle 'True' 'False' as odd silent %}
+
+                    {% if odd == 'True' %}
+                        <tr>
+                    {% endif %}
+
+                    <td>
+                        <div class="field-wrapper"> {{ field }} </div>
+                    </td>
+
+                    {% if odd == 'False' %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <input type="submit" value="Balance" class="button"/>
+</form>
+{% endblock balancer-content %}

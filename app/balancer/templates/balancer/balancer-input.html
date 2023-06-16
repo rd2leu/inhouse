@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_scripts %}
+    {{ form.media }} {# django-autocomplete-light stuff #}
+{% endblock page_scripts %}
+
+{% block page_styles %}
+    <link href="{% static 'balancer/css/balancer-input.css' %}" rel="stylesheet">
+{% endblock page_styles %}
+
+{% block content %}
+
+<div class="page-overview">
+    <div class="page-overview-primary">
+        <div class="page-overview-title">
+            <h1>
+                Team balancer
+            </h1>
+        </div>
+    </div>
+</div>
+
+<div class="page-menu">
+    {% url 'balancer:balancer-input' as balancer_url %}
+    {% url 'balancer:balancer-input-custom'  as balancer_custom_url %}
+
+    <nav class="menu-links">
+        {% with request.resolver_match.url_name as page %}
+        <ul>
+            <li class="{% if page == 'balancer-input' %}active{% endif %}">
+                <a href="{{ balancer_url }}">Ladder</a></li>
+
+            <li class="{% if page == 'balancer-input-custom' %}active{% endif %}">
+                <a href="{{ balancer_custom_url }}">Custom</a></li>
+        </ul>
+        {% endwith %}
+    </nav>
+</div>
+
+<section>
+    <header>
+        <a> Add players </a>
+    </header>
+    <article class="col-xs-5">
+        {% block balancer-content %}
+        <form action="{% url 'balancer:balancer-input' %}" method="post">
+            {% csrf_token %}
+
+            <div class="table-responsive">
+                <table class="table table-borderless">
+                    <tbody>
+                    {% for field in form %}
+                        <tr>
+                            <td class="cell-centered col-xs-2">{{ forloop.counter }}</td>
+                            <td>
+                                <div class="field-wrapper"> {{ field }} </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <input type="submit" value="Balance" class="button"/>
+        </form>
+        {% endblock balancer-content %}
+
+        {#  form errors #}
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <strong> Errors: </strong>
+                <br>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ field.name }}:</strong> {{ error|escape }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </article>
+</section>
+
+{% endblock %}
+

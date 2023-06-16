@@ -1,0 +1,101 @@
+.color-bar .score {
+    background: #FBB829;
+}
+
+.color-bar .mmr{
+    background: #EA030E;
+}
+
+.color-bar .matches {
+    background: #A9CF54;
+}
+
+.color-bar .wins {
+    background: #A9CF54
+}
+
+.color-bar .losses {
+    background: #EA030E;
+}
+
+.color-bar .winrate {
+    background: #F26522
+}
+
+
+.match-record {
+    color: #979797;
+}
+
+.match-record .wins, .match-row .win {
+    color: #A9CF54;
+}
+
+.match-record .sep {
+    padding: 0 2px;
+}
+
+.match-record .losses, .match-row .loss {
+    color: #C23C2A;
+}
+
+.match-record .draws, .match-row .draw {
+    color: #979797;
+}
+
+.test-winner {
+    color: #39CCCC;
+}
+
+div.test-winner {
+    font-size: 1.3em;
+    font-weight: 800;
+    line-height: 2em;
+    vertical-align: middle;
+    text-align: center;
+    text-shadow: 1px 1px 5px #000;
+    text-transform: uppercase;
+    margin-top: 12px;
+}
+
+.tablesorter th {
+    cursor: pointer;
+}
+
+.sort-arrow {
+    display: inline-block;
+    border: 6px solid transparent;
+    height: 0;
+    width: 0;
+    vertical-align: middle;
+    margin-left: 6px;
+    margin-top: 1px;
+
+ }
+
+.tablesorter-headerDesc span {
+    border-top-color: white;
+}
+
+.tablesorter-headerAsc span {
+    margin-top: -7px;
+    border-bottom-color: white;
+}
+
+.winrate-img {
+    width: 25px;
+    height: 25px;
+}
+
+.admin-bonus {
+    color: #39CCCC;
+}
+
+.admin-penalty {
+    color: #FBB829;
+}
+
+td .small {
+    float: right;
+    padding-right: 15px;
+}

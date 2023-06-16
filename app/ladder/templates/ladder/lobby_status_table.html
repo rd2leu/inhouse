@@ -1,0 +1,82 @@
+{% load static %}
+
+<section>
+    <header>
+        {{ lobby.game_name }}
+        <div>
+            <small class="left">
+                {% if lobby.state == 'ready' %}
+                    <span class="ready"> Ready </span>
+                    {% if lobby.free_slots < 6 %}
+                        <span class="free_slots"> +{{ lobby.free_slots }}</span>
+                    {% endif %}
+                {% else %}
+                    <span class="game"> In game </span>
+                    <span> {{ lobby.game_duration_mins }} min </span>
+                {% endif %}
+            </small>
+            <small class="right">
+                <span> Average MMR: </span>
+                <span class="average-mmr
+                    {% if  lobby.average_mmr and lobby.average_mmr < 4750 %}
+                        mmr-weak
+                    {% elif lobby.average_mmr > 5250 %}
+                        mmr-strong
+                    {% endif %}
+                ">
+                    {{ lobby.average_mmr|default:0 }}
+                </span>
+                {% if  lobby.average_mmr and lobby.average_mmr < 4750 %}
+                    <img class="mmr-img" src="{% static 'img/DansGame.png' %}">
+                    <span class="mmr-img-placeholder"></span>
+                {% elif lobby.average_mmr > 5250 %}
+                    <img class="mmr-img" src="{% static 'img/BlessRNG.png' %}">
+                    <span class="mmr-img-placeholder"></span>
+                {% endif %}
+            </small>
+        </div>
+    </header>
+<article>
+    <div class="row">
+    {% for team in lobby.teams %}
+        <div class="col-xs-6">
+            <div class="table-responsive table-borderless">
+                <table class="table table-borderless">
+                    <tbody>
+                    {% for player in team %}
+                        {% if player.dota_mmr %}  {# only if player registered #}
+                            {% url 'ladder:player-overview' player.name|slugify as player_url %}
+                        {% endif %}
+
+                        <tr class="{% if player and not player.dota_mmr %} unregistered {% endif %}"
+                            data-link="{{ player_url }}">
+                            <td class="col-xs-6">
+                                <a class='link-white' href="{{ player_url }}"> {{ player.name }} </a>
+                            </td>
+                            <td class="col-xs-5">
+                                <span class="mmr">
+                                    {% if player.dota_mmr %}
+                                        {{ player.dota_mmr }}
+                                    {% elif player %}
+                                        Not registered
+                                    {% endif %}
+                                </span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    <div class="unassigned">
+        <small>
+            <span> Others: </span>
+            {% for member in lobby.unassigned %}
+                <span> {{ member.name }} {% if not forloop.last %}, {% endif %} </span>
+            {% endfor %}
+        </small>
+    </div>
+</article>
+</section>

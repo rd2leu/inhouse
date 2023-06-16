@@ -1,0 +1,17 @@
+Django==4.2
+jsonfield==3.1.0
+whitenoise==6.4.0
+django-autocomplete-light==3.9.7
+django-debug-toolbar==4.1.0
+django-autoslug==1.9.9
+django-solo==2.0.0
+discord.py==1.5.1
+timeago==1.0.14
+django-annoying==0.10.6
+django-reverse-admin==2.9.6
+pytz==2020.1
+yfinance==0.1.55
+django-multiselectfield==0.1.12
+
+git+https://github.com/unclevasya/django-pure-pagination.git@disablable_margins
+git+https://github.com/unclevasya/dota2.git@protobufs_update

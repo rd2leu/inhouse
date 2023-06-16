@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_scripts %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.28.0/js/jquery.tablesorter.js"></script>
+    <script src="{% static 'ladder/js/ladder.js' %}"></script>
+    <script src="{% static 'ladder/js/player_list.js' %}"></script>
+{% endblock page_scripts %}
+
+{% block page_styles %}
+    <link rel="stylesheet" href="{% static 'ladder/css/ladder.css' %}">
+{% endblock page_styles %}
+
+{% block content %}
+
+<div class="page-overview">
+    <div class="page-overview-primary">
+        <div class="page-overview-title">
+            <h1> Leaderboards
+                <small>{% block player-page-title %} {% endblock %}</small>
+            </h1>
+        </div>
+    </div>
+</div>
+
+<div class="page-menu">
+    {% url 'ladder:player-list' as player_list_url %}
+    {% url 'ladder:player-list-score' as player_list_scores_url %}
+
+    <nav class="menu-links">
+        {% with request.resolver_match.url_name as page %}
+        <ul>
+            <li class="{% if page == 'player-list-score' or page == 'index' %}active{% endif %}">
+                <a href="{{ player_list_scores_url }}">Score</a></li>
+
+            <li class="{% if page == 'player-list' %}active{% endif %}">
+                <a href="{{ player_list_url }}">Ladder MMR</a></li>
+        </ul>
+        {% endwith %}
+    </nav>
+</div>
+
+<section>
+<article>
+    {% block player-list-content %}
+    <div class="table-responsive">
+        <table class="table table-borderless tablesorter">
+            <thead>
+                <tr>
+                    <th class="cell-centered">Rank <span class="sort-arrow"></span></th>
+                    <th class="col-xs-3">Player <span class="sort-arrow"></span></th>
+                    <th class="col-xs-2">Ladder MMR <span class="sort-arrow"></span></th>
+                    <th class="col-xs-2">Dota MMR <span class="sort-arrow"></span></th>
+                    <th class="col-xs-2">Matches <span class="sort-arrow"></span></th>
+                    <th class="col-xs-2">Winrate <span class="sort-arrow"></span></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for player in player_list %}
+                {% url 'ladder:player-overview' player.slug as player_url %}
+
+                <tr class="player_row" data-link="{{ player_url }}">
+                    <td class="cell-centered">
+                        {{ player.rank_ladder_mmr }}
+                    </td>
+                    <td>
+                        <div class="avatar">
+                            <a href="{{ player_url }}">
+                                <img src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/60/6009ebd5640bed7c75004558733d63493ff2eaf8_full.jpg">
+                            </a>
+                        </div>
+                        <a href="{{ player_url }}"> {{ player.name }} </a>
+                        {% if player.name == 'Ulafzs' %}
+                            &nbsp;&nbsp;
+                            <span class="test-winner">Day 1 winner!</span>
+                        {% endif %}
+                        <div class="subtext">
+                            {% with player.matches|first as last_played %}
+                                <time class="timeago"
+                                      datetime="{{ last_played.match.date|date:'c' }}"
+                                      title="{{ last_played.match.date }}">
+                                    {{ last_played.match.date|default:'-' }}
+                                </time>
+                            {% endwith %}
+                        </div>
+                    </td>
+                    <td>
+                        <span>
+                            {{ player.ladder_mmr }}
+                        </span>
+                        <div class="color-bar">
+                            <div class="score" style="width: {{ player.ladder_mmr_percent }}%"></div>
+                        </div>
+                    </td>
+                    <td>
+                        {{ player.dota_mmr }}
+                        <div class="color-bar">
+                            <div class="mmr" style="width: {{ player.dota_mmr_percent }}%"></div>
+                        </div>
+                    </td>
+                    <td>
+                        {{ player.match_count }}
+                        <div class="color-bar">
+                            <div class="matches" style="width: {{ player.matches_percent }}%"></div>
+                        </div>
+                    </td>
+                    <td>
+                        {{ player.winrate }}%
+
+                        {% if player.match_count >= 5 %}
+                            {% if player.winrate >= 75 %}
+                                <img class="winrate-img" src="{% static 'img/PogChamp.png' %}">
+                            {% elif player.winrate <= 33 %}
+                                <img class="winrate-img" src="{% static 'img/4Head.png' %}">
+                            {% endif %}
+                        {% endif %}
+
+                        <div class="color-bar">
+                            <div class="winrate" style="width: {{ player.winrate }}%"></div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endblock player-list-content %}
+</article>
+</section>
+{% endblock %}

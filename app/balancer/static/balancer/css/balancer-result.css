@@ -1,0 +1,92 @@
+.mmr-diff {
+    font-size: 1.3em;
+    font-weight: 800;
+    line-height: 2em;
+    vertical-align: middle;
+    text-align: center;
+    text-shadow: 1px 1px 5px #000;
+    text-transform: uppercase;
+    margin-top: 12px;
+}
+
+.mmr-diff .team1 {
+    color: #92A525;
+}
+
+.mmr-diff .team2 {
+    color: #C23C2A;
+}
+
+.mmr-diff .draw {
+    color: #FBB829;
+}
+
+section.balancer-result.team1 header a,
+section.balancer-result.team1 footer a{
+    color: #92A525;
+}
+
+section.balancer-result.team2 header a,
+section.balancer-result.team2 footer a{
+    color: #C23C2A;
+}
+
+section.balancer-result.team2 header,
+section.balancer-result.team2 footer
+{
+    text-align: right;
+}
+
+section.balancer-result article {
+    display: flex;
+}
+
+/*section.balancer-result footer {*/
+    /*text-align: center;*/
+/*}*/
+
+section.balancer-result a.button {
+	display: inline-block;
+    margin-bottom: 0;
+    margin-top: 8px;
+}
+
+section.balancer-result.team1 a.button {
+    border: 1px solid #92A525;
+}
+
+section.balancer-result.team2 a.button {
+    border: 1px solid #C23C2A;
+}
+
+section.balancer-result a.button.already-done {
+    cursor: inherit;
+    border: none;
+    background: inherit;
+}
+
+.balancer-result-stats {
+    width: 100%;
+}
+
+.balancer-result-stats table > tbody > tr > td {
+    padding-left: 8px;
+}
+
+.color-bar .team1 {
+    background: #92A525;
+}
+
+.color-bar .team2 {
+    background: #C23C2A;
+}
+
+#clipboard {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+}
+
+#button-copy {
+    margin-top: 0;
+}

@@ -1,0 +1,83 @@
+.page-overview-secondary dl {
+    margin-top: 0;
+}
+
+.page-overview-secondary dl dt {
+    margin-top: 0;
+}
+
+.page-overview {
+    margin-bottom: 20px;
+}
+
+section header {
+    margin-top: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #A9CF54;
+    text-transform: none;
+}
+
+section header .left {
+    float: left;
+}
+
+section header .right {
+    float: right;
+}
+
+.unassigned {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.unassigned span {
+    color: rgba(255,255,255,0.6);
+}
+
+.average-mmr {
+    margin-left: 5px;
+    color: white;
+}
+
+.mmr-weak {
+    /*color: #C23C2A;*/
+}
+
+.mmr-strong {
+   /*color: #39CCCC;*/
+}
+
+.mmr-img {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 25px;
+    height: 25px;
+}
+
+.mmr-img-placeholder {
+    display: inline-block;
+    margin-right: 22px;
+}
+
+.game {
+    color: #39CCCC;
+    margin-right: 5px;
+}
+
+.free_slots {
+    color: #39CCCC;
+    font-weight: bold;
+    margin-left: 5px
+}
+
+.unregistered a,
+.unregistered span {
+    color: #FBB829 !important;
+}
+
+span.mmr {
+    float: right;
+}
+

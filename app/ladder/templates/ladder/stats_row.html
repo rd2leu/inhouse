@@ -1,0 +1,33 @@
+<section>
+<header> {{ caption }} </header>
+<article>
+    <div class="row stats-row">
+        <div class="col-md-4 stats-element">
+            <div class="stats-value">
+                <span> {{ stats.matches }} </span>
+            </div>
+            <div class="stats-caption">
+                <p>Games played</p>
+            </div>
+        </div>
+
+         <div class="col-md-4 stats-element">
+            <div class="stats-value">
+                <span> {{ stats.players }} </span>
+            </div>
+            <div class="stats-caption">
+                <p>Active players</p>
+            </div>
+        </div>
+
+         <div class="col-md-4 stats-element">
+            <div class="stats-value">
+                <span> {{ stats.mmr|floatformat:0|default:0 }} </span>
+            </div>
+            <div class="stats-caption">
+                <p>Average MMR</p>
+            </div>
+        </div>
+    </div>
+</article>
+</section>
