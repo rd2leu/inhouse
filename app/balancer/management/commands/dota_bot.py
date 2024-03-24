@@ -7,7 +7,7 @@ from app.balancer.balancer import role_names
 from app.balancer.models import BalanceAnswer
 from django.core.management.base import BaseCommand
 from django.core.cache import cache
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from app.balancer.managers import BalanceResultManager, BalanceAnswerManager
 from app.ladder.managers import MatchManager, PlayerManager
 from django.utils.datetime_safe import datetime
@@ -71,6 +71,7 @@ class SidePickOptions(object):
 class Command(BaseCommand):
     def __init__(self):
         self.bots = []
+        super().__init__()
 
     def add_arguments(self, parser):
         parser.add_argument('-n', '--number',
@@ -423,11 +424,11 @@ class Command(BaseCommand):
 
         url = '%s%s?page=%s' % (host, url, answer_num)
 
-        bot.balance_answer = answer = result.answers.all()[answer_num-1]
+        bot.balance_answer = answer = result.answers.all()[answer_num - 1]
         for i, team in enumerate(answer.teams):
             player_names = [p[0] for p in team['players']]
             bot.channels.lobby.send('Team %d (avg. %d): %s' %
-                                   (i+1, team['mmr'], ' | '.join(player_names)))
+                                   (i + 1, team['mmr'], ' | '.join(player_names)))
         bot.channels.lobby.send(url)
 
     # TODO: get command from kwargs, so I don't have to add
@@ -730,7 +731,7 @@ class Command(BaseCommand):
             player_names = [p[0] for p in team['players']]
             bot.channels.lobby.send(
                 'Team %d (avg. %d): %s' %
-                (i+1, team['mmr'], ' | '.join(player_names)))
+                (i + 1, team['mmr'], ' | '.join(player_names)))
 
     # creates balance record for already made-up teams
     # TODO: refactor this code to decrese repetition
@@ -777,7 +778,7 @@ class Command(BaseCommand):
             player_names = [p[0] for p in team['players']]
             bot.channels.lobby.send(
                 'Team %d (avg. %d): %s' %
-                (i+1, team['mmr'], ' | '.join(player_names)))
+                (i + 1, team['mmr'], ' | '.join(player_names)))
 
     @staticmethod
     def ban_command(bot, msg):
@@ -1203,7 +1204,6 @@ class Command(BaseCommand):
         bot_number = re.search("(\d+)$", bot.steam.username).group(0)
         lobby_name = f'{LadderSettings.get_solo().dota_lobby_name} Ladder {bot_number}'
 
-
         if bot.min_mmr > 0:
             lobby_name += ' %d+' % bot.min_mmr
         if bot.voice_required:
@@ -1391,9 +1391,9 @@ class Command(BaseCommand):
         players = [player for player in members
                    if player.team in (DOTA_GC_TEAM.GOOD_GUYS, DOTA_GC_TEAM.BAD_GUYS)]
         # 2 teams with 5 slots each, None for empty slot
-        teams = [[None]*5 for _ in range(2)]
+        teams = [[None] * 5 for _ in range(2)]
         for player in players:
-            teams[player.team][player.slot-1] = cache_member(player)
+            teams[player.team][player.slot - 1] = cache_member(player)
 
         unassigned = [cache_member(member) for member in members
                       if member.team not in (DOTA_GC_TEAM.GOOD_GUYS, DOTA_GC_TEAM.BAD_GUYS)]

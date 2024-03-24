@@ -66,7 +66,7 @@ def balance_teams(players, mmr_exponent=3):
     answers = [
         x for x in answers
             if len(set(x[0]['players']).intersection(top_players)) == 1 and
-               len(set(x[0]['players']).intersection(low_players)) == 1
+                len(set(x[0]['players']).intersection(low_players)) == 1
     ]
 
     # calc mmr differences for each pair of teams

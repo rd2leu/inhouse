@@ -6,6 +6,8 @@ from collections import defaultdict, deque
 from datetime import timedelta
 import random
 from statistics import mean
+from asgiref.sync import sync_to_async
+from channels.db import database_sync_to_async
 
 import discord
 import pytz
@@ -14,7 +16,7 @@ from discord.ext import tasks
 from django.core.management.base import BaseCommand
 import os
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db.models import Q, Count, Prefetch, Case, When, F
 from django.utils import timezone
 
@@ -59,10 +61,10 @@ class Command(BaseCommand):
         async def on_ready():
             print(f'Logged in: {self.bot.user} {self.bot.user.id}')
 
-            polls_channel = DiscordChannels.get_solo().polls
+            polls_channel = await database_sync_to_async(DiscordChannels.get_solo)()
             self.polls_channel = self.bot.get_channel(polls_channel)
 
-            queues_channel = DiscordChannels.get_solo().queues
+            queues_channel = await database_sync_to_async(DiscordChannels.get_solo)()
             self.queues_channel = self.bot.get_channel(queues_channel)
 
             # await self.setup_poll_messages()
@@ -252,7 +254,7 @@ class Command(BaseCommand):
 
         """
         This task removes unnecessary messages (status and pings);
-        This is done to make channel clear and also to highlight it 
+        This is done to make channel clear and also to highlight it
         when new status message appears after some time.
         """
         @tasks.loop(minutes=5)
@@ -375,7 +377,7 @@ class Command(BaseCommand):
             dota_id = str(int(params[2]))  # check that id is a number
         except (IndexError, ValueError):
             await msg.channel.send(
-                'Format: `!register username mmr dota_id`. Example: \n' 
+                'Format: `!register username mmr dota_id`. Example: \n'
                 '```\n'
                 '!register Uvs 3000 444510529\n'
                 '```'
@@ -408,8 +410,8 @@ class Command(BaseCommand):
 
         admins_to_ping = Player.objects.filter(new_reg_pings=True)
         await msg.channel.send(
-            f"""Welcome to the ladder, `{name}`! 
-            \nYou need to get vouched before you can play. Wait for inhouse staff to review your signup. 
+            f"""Welcome to the ladder, `{name}`!
+            \nYou need to get vouched before you can play. Wait for inhouse staff to review your signup.
             \nYou can ping their lazy asses if it takes too long ;)
             \n{' '.join(self.player_mention(p) for p in admins_to_ping)}"""
         )
@@ -1748,4 +1750,3 @@ class Command(BaseCommand):
         except (DiscordPoll.DoesNotExist, discord.NotFound, discord.HTTPException, AttributeError):
             msg = await channel.send(text)
             self.status_message = msg.id
-
